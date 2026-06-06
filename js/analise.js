@@ -6,9 +6,11 @@ const atrasos = {};
 
 for(let i=1;i<=25;i++){
 
-frequencia[i] = 0;
+const numero = String(i).padStart(2,"0");
 
-atrasos[i] = 0;
+frequencia[numero] = 0;
+
+atrasos[numero] = 0;
 
 }
 
@@ -62,8 +64,11 @@ Object.entries(freq)
 .sort((a,b)=>b[1]-a[1])
 .forEach(item=>{
 
-div.innerHTML += `<span class="numero">
-${item[0]} (${item[1]}) </span>`;
+div.innerHTML += `
+<div class="numero">
+${item[0]} → ${item[1]}x
+</div>
+`;
 
 });
 
@@ -79,8 +84,11 @@ Object.entries(atrasos)
 .sort((a,b)=>b[1]-a[1])
 .forEach(item=>{
 
-div.innerHTML += `<span class="numero">
-${item[0]} (${item[1]}) </span>`;
+div.innerHTML += `
+<div class="numero">
+${item[0]} → ${item[1]}
+</div>
+`;
 
 });
 
@@ -98,8 +106,11 @@ const exclusoes = Object.entries(freq)
 
 exclusoes.forEach(item=>{
 
-div.innerHTML += `<span class="numero">
-${item[0]} </span>`;
+div.innerHTML += `
+<div class="numero">
+${item[0]}
+</div>
+`;
 
 });
 
