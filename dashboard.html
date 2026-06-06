@@ -1,78 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Dashboard Lotofácil</title>
+<title>Dashboard Lotofácil</title>
 
-  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 
-  <script type="module" src="js/dashboard.js"></script>
+<script type="module" src="js/dashboard.js"></script>
 
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <header>
+<header>
 
-      <h1>
-        🎯 Dashboard Lotofácil
-      </h1>
+<h1>🎯 Dashboard Lotofácil</h1>
 
-      <button id="logoutBtn">
-        Sair
-      </button>
+<button id="logoutBtn">
+Sair
+</button>
 
-    </header>
+</header>
 
-    <textarea
-      id="concursosInput"
-      placeholder="Cole os concursos aqui...
+<textarea
+id="concursosInput"
+placeholder="Cole os concursos assim:
 
-Exemplo:
+3703 06/06/2026 - 01 03 05 07 08 09 10 14 15 17 21 22 23 24 25
+3702 05/06/2026 - 02 03 05 09 13 14 15 16 17 18 20 21 22 23 25">
+</textarea>
 
-3703 - 01 03 05 07 08 09 10 14 15 17 21 22 23 24 25
-3702 - 02 03 05 09 13 14 15 16 17 18 20 21 22 23 25">
-    </textarea>
+<button id="analisarBtn">
+Salvar Concursos
+</button>
 
-    <button id="analisarBtn">
-      Salvar e Analisar
-    </button>
+<div class="grid">
 
-    <div class="grid">
+<div class="card">
 
-      <div class="card">
+<h2>📊 Frequência</h2>
 
-        <h2>📊 Frequência</h2>
+<div id="frequencia"></div>
 
-        <div id="frequencia"></div>
+</div>
 
-      </div>
+<div class="card">
 
-      <div class="card">
+<h2>⏳ Atrasos</h2>
 
-        <h2>⏳ Atrasos</h2>
+<div id="atrasos"></div>
 
-        <div id="atrasos"></div>
+</div>
 
-      </div>
+<div class="card">
 
-      <div class="card">
+<h2>🚫 Exclusões</h2>
 
-        <h2>🚫 Exclusões Sugeridas</h2>
+<div id="exclusoes"></div>
 
-        <div id="exclusoes"></div>
+</div>
 
-      </div>
+</div>
 
-    </div>
-
-  </div>
+</div>
 
 </body>
+
 </html>
