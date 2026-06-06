@@ -2,24 +2,26 @@ import { auth, db } from "./firebase.js";
 
 import {
 
-onAuthStateChanged,
-signOut
+  onAuthStateChanged,
+  signOut
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
 
-doc,
-setDoc,
-collection,
-getDocs,
-query,
-orderBy,
-limit
+  doc,
+  setDoc,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import { analisarConcursos } from "./analise.js";
+
+import { executarSimulacao } from "./simulador.js";
 
 const textarea = document.getElementById("concursosInput");
 
@@ -27,94 +29,104 @@ const analisarBtn = document.getElementById("analisarBtn");
 
 const logoutBtn = document.getElementById("logoutBtn");
 
+const simularBtn = document.getElementById("simularBtn");
+
 onAuthStateChanged(auth, async (user)=>{
 
-if(!user){
+  if(!user){
 
-window.location.href = "index.html";
+    window.location.href = "index.html";
 
-return;
+    return;
 
-}
+  }
 
-carregarConcursos();
+  carregarConcursos();
 
 });
 
 logoutBtn.addEventListener("click", async ()=>{
 
-await signOut(auth);
+  await signOut(auth);
 
-window.location.href = "index.html";
+  window.location.href = "index.html";
 
 });
 
 analisarBtn.addEventListener("click", async ()=>{
 
-const texto = textarea.value.trim();
+  const texto = textarea.value.trim();
 
-const linhas = texto.split("\n");
+  const linhas = texto.split("\n");
 
-for(const linha of linhas){
+  for(const linha of linhas){
 
-const partes = linha.split("-");
+    const partes = linha.split("-");
 
-if(partes.length < 2) continue;
+    if(partes.length < 2) continue;
 
-const info = partes[0].trim();
+    const info = partes[0].trim();
 
-const dezenasTexto = partes[1].trim();
+    const dezenasTexto = partes[1].trim();
 
-const infoPartes = info.split(" ");
+    const infoPartes = info.split(" ");
 
-const numeroConcurso = infoPartes[0];
+    const numeroConcurso = infoPartes[0];
 
-const dataConcurso = infoPartes[1] || "";
+    const dataConcurso = infoPartes[1] || "";
 
-const dezenas = dezenasTexto
-.split(" ")
-.filter(n => n !== "");
+    const dezenas = dezenasTexto
+      .split(" ")
+      .filter(n => n !== "");
 
-await setDoc(
-doc(db, "concursos", numeroConcurso),
-{
-numero: Number(numeroConcurso),
-data: dataConcurso,
-dezenas: dezenas,
-timestamp: new Date()
-}
-);
+    await setDoc(
+      doc(db, "concursos", numeroConcurso),
+      {
+        numero: Number(numeroConcurso),
+        data: dataConcurso,
+        dezenas: dezenas,
+        timestamp: new Date()
+      }
+    );
 
-}
+  }
 
-textarea.value = "";
+  textarea.value = "";
 
-carregarConcursos();
+  carregarConcursos();
 
 });
 
 async function carregarConcursos(){
 
-const concursosRef = collection(db, "concursos");
+  const concursosRef = collection(db, "concursos");
 
-const q = query(
-concursosRef,
-orderBy("numero", "desc"),
-limit(30)
-);
+  const q = query(
+    concursosRef,
+    orderBy("numero", "desc"),
+    limit(100)
+  );
 
-const snapshot = await getDocs(q);
+  const snapshot = await getDocs(q);
 
-const concursos = [];
+  const concursos = [];
 
-snapshot.forEach((doc)=>{
+  snapshot.forEach((doc)=>{
 
-const dados = doc.data();
+    const dados = doc.data();
 
-concursos.push(dados.dezenas);
+    concursos.push(dados);
 
-});
+  });
 
-analisarConcursos(concursos);
+  analisarConcursos(
+    concursos.map(c=>c.dezenas)
+  );
+
+  simularBtn.onclick = ()=>{
+
+    executarSimulacao(concursos);
+
+  };
 
 }
