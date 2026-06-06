@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 apiKey: "AIzaSyD75Zy6dBNHQEsSdUbIpTv2JKtP9VZv5dM",
 
-authDomain: "painel-avaliar-loto.firebaseapp.com",
+authDomain: "luizpaulacs.github.io",
 
 projectId: "painel-avaliar-loto",
 
