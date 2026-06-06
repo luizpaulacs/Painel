@@ -9,8 +9,13 @@ signOut
 
 import {
 
+doc,
+setDoc,
 collection,
-addDoc
+getDocs,
+query,
+orderBy,
+limit
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -22,13 +27,17 @@ const analisarBtn = document.getElementById("analisarBtn");
 
 const logoutBtn = document.getElementById("logoutBtn");
 
-onAuthStateChanged(auth, (user)=>{
+onAuthStateChanged(auth, async (user)=>{
 
 if(!user){
 
 window.location.href = "index.html";
 
+return;
+
 }
+
+carregarConcursos();
 
 });
 
@@ -42,37 +51,70 @@ window.location.href = "index.html";
 
 analisarBtn.addEventListener("click", async ()=>{
 
-const texto = textarea.value;
+const texto = textarea.value.trim();
 
-const linhas = texto.trim().split("\n");
+const linhas = texto.split("\n");
 
-const concursos = [];
-
-linhas.forEach(linha=>{
+for(const linha of linhas){
 
 const partes = linha.split("-");
 
-if(partes.length > 1){
+if(partes.length < 2) continue;
 
-const numeros = partes[1]
-.trim()
+const info = partes[0].trim();
+
+const dezenasTexto = partes[1].trim();
+
+const infoPartes = info.split(" ");
+
+const numeroConcurso = infoPartes[0];
+
+const dataConcurso = infoPartes[1] || "";
+
+const dezenas = dezenasTexto
 .split(" ")
-.filter(n=>n !== "");
+.filter(n => n !== "");
 
-concursos.push(numeros);
-
-}
-
-});
-
-await addDoc(
-collection(db,"concursos"),
+await setDoc(
+doc(db, "concursos", numeroConcurso),
 {
-concursos,
-data:new Date()
+numero: Number(numeroConcurso),
+data: dataConcurso,
+dezenas: dezenas,
+timestamp: new Date()
 }
 );
 
-analisarConcursos(concursos);
+}
+
+textarea.value = "";
+
+carregarConcursos();
 
 });
+
+async function carregarConcursos(){
+
+const concursosRef = collection(db, "concursos");
+
+const q = query(
+concursosRef,
+orderBy("numero", "desc"),
+limit(30)
+);
+
+const snapshot = await getDocs(q);
+
+const concursos = [];
+
+snapshot.forEach((doc)=>{
+
+const dados = doc.data();
+
+concursos.push(dados.dezenas);
+
+});
+
+analisarConcursos(concursos);
+
+}
