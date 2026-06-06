@@ -122,3 +122,26 @@ text-align:center;
 margin-top:15px;
 color:#f87171;
 }
+.simulacao-item{
+
+  background:#334155;
+
+  padding:12px;
+
+  border-radius:10px;
+
+  margin-top:10px;
+
+}
+
+.destaque{
+
+  background:#22c55e;
+
+  color:white;
+
+  font-size:18px;
+
+  font-weight:bold;
+
+}
