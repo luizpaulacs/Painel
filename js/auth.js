@@ -2,8 +2,8 @@ import { auth } from "./firebase.js";
 
 import {
 
-signInWithEmailAndPassword,
-createUserWithEmailAndPassword
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -19,41 +19,44 @@ const mensagem = document.getElementById("mensagem");
 
 loginBtn.addEventListener("click", async () => {
 
-try{
+  try {
 
-await signInWithEmailAndPassword(
-auth,
-email.value,
-senha.value
-);
+    await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      senha.value
+    );
 
-window.location.href = "dashboard.html";
+    window.location.href = "dashboard.html";
 
-}catch(error){
+  } catch(error){
 
-mensagem.innerHTML = error.message;
+    mensagem.innerHTML = error.message;
 
-}
+    console.log(error);
+
+  }
 
 });
 
 cadastroBtn.addEventListener("click", async () => {
 
-try{
+  try {
 
-await createUserWithEmailAndPassword(
-auth,
-email.value,
-senha.value
-);
+    await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      senha.value
+    );
 
-window.location.href = "dashboard.html";
+    window.location.href = "dashboard.html";
 
-}catch(error){
+  } catch(error){
 
-mensagem.innerHTML = error.message;
+    mensagem.innerHTML = error.message;
 
-}
+    console.log(error);
+
+  }
 
 });
-
